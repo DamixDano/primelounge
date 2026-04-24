@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRIME LOUNGE | No Excuses. Just Results.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c870;
+    --gold-dim: #8a6f2e;
+    --bg: #080809;
+    --bg2: #0f0f11;
+    --bg3: #161618;
+    --bg4: #1d1d20;
+    --border: rgba(201,168,76,0.18);
+    --border-dim: rgba(255,255,255,0.06);
+    --text: #f0ede6;
+    --muted: #8a887f;
+    --muted2: #5a5855;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* GRID LINES BACKGROUND */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* GLOW ORB */
+  .glow-orb {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glow-orb2 {
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%);
+    bottom: 20%;
+    left: -100px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* EVERYTHING ON TOP */
+  nav, main, footer { position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(1.5rem, 5vw, 5rem);
+    height: 70px;
+    border-bottom: 1px solid var(--border-dim);
+    backdrop-filter: blur(20px);
+    background: rgba(8,8,9,0.85);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-family: 'Syne', sans-serif;
+    font-weight: 500;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.4rem;
+    border: 1px solid var(--border);
+    color: var(--gold);
+    text-decoration: none;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.25s;
+    background: transparent;
+  }
+
+  .nav-cta:hover {
+    background: rgba(201,168,76,0.1);
+    border-color: var(--gold);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem clamp(1.5rem, 6vw, 6rem) 6rem;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.35s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3.5rem, 10vw, 8.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  .hero-title .gold { color: var(--gold); }
+  .hero-title .dim { color: rgba(240,237,230,0.25); }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.65s forwards;
+  }
+
+  .hero-desc {
+    max-width: 600px;
+    font-size: 1.05rem;
+    color: rgba(240,237,230,0.65);
+    line-height: 1.8;
+    margin: 0 auto 3.5rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .hero-desc strong { color: var(--text); font-weight: 500; }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.95s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2.5rem;
+    background: var(--gold);
+    color: #080809;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2.5rem;
+    border: 1px solid var(--border);
+    color: var(--gold);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.25s;
+    background: transparent;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(201,168,76,0.07);
+    border-color: var(--gold);
+    transform: translateY(-1px);
+  }
+
+  /* REVIEWS TICKER */
+  .reviews-bar {
+    width: 100%;
+    overflow: hidden;
+    border-top: 1px solid var(--border-dim);
+    border-bottom: 1px solid var(--border-dim);
+    padding: 2rem 0;
+    margin-bottom: 5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .reviews-bar::before,
+  .reviews-bar::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 120px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .reviews-bar::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--bg), transparent);
+  }
+
+  .reviews-bar::after {
+    right: 0;
+    background: linear-gradient(-90deg, var(--bg), transparent);
+  }
+
+  .reviews-inner {
+    display: flex;
+    gap: 1.5rem;
+    animation: ticker 60s linear infinite;
+    width: max-content;
+  }
+
+  .reviews-inner:hover { animation-play-state: paused; }
+
+  .review-card {
+    background: var(--bg3);
+    border: 1px solid var(--border-dim);
+    padding: 1.5rem 1.8rem;
+    width: 340px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color 0.25s;
+  }
+
+  .review-card:hover { border-color: var(--border); }
+
+  .review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .review-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .review-badge {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--border);
+    padding: 0.15rem 0.5rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 500;
+  }
+
+  .review-stars {
+    color: var(--gold);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  .review-text {
+    font-size: 0.85rem;
+    color: rgba(240,237,230,0.6);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION COMMON */
+  section { padding: 7rem clamp(1.5rem, 6vw, 6rem); }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 4rem;
+  }
+
+  /* ABOUT SECTION */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-card {
+    background: var(--bg3);
+    border: 1px solid var(--border-dim);
+    padding: 3rem;
+    position: relative;
+  }
+
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 60%;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  .about-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .about-stat:last-child { margin-bottom: 0; }
+
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 3rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .stat-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border-dim);
+    margin: 1.5rem 0;
+  }
+
+  .about-text h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .about-text p {
+    color: rgba(240,237,230,0.7);
+    font-weight: 300;
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+  }
+
+  .about-text p strong { color: var(--text); font-weight: 500; }
+
+  /* SERVICES */
+  .services { background: var(--bg2); }
+
+  .services-header {
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--border-dim);
+  }
+
+  .service-card {
+    background: var(--bg2);
+    padding: 3rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: background 0.3s;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+  }
+
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .service-card:hover { background: var(--bg3); }
+  .service-card:hover::after { transform: scaleX(1); }
+
+  .service-icon {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .service-badge {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.7rem;
+  }
+
+  .service-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: rgba(201,168,76,0.12);
+    position: absolute;
+    bottom: 1.5rem;
+    right: 2rem;
+    line-height: 1;
+  }
+
+  .service-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .service-desc {
+    font-size: 0.92rem;
+    color: rgba(240,237,230,0.6);
+    line-height: 1.75;
+    font-weight: 300;
+    max-width: 340px;
+  }
+
+  .service-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: auto;
+    transition: gap 0.2s;
+  }
+
+  .service-card:hover .service-arrow { gap: 0.9rem; }
+
+  /* WHY SECTION */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--border-dim);
+  }
+
+  .why-item {
+    background: var(--bg);
+    padding: 2.5rem 2rem;
+    position: relative;
+  }
+
+  .why-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    opacity: 0.5;
+  }
+
+  .why-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+  }
+
+  .why-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .why-text {
+    font-size: 0.9rem;
+    color: rgba(240,237,230,0.55);
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  /* CTA BAND */
+  .cta-band {
+    background: var(--bg3);
+    border-top: 1px solid var(--border-dim);
+    border-bottom: 1px solid var(--border-dim);
+    padding: 6rem clamp(1.5rem, 6vw, 6rem);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-band h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 4rem);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .cta-band h2 span { color: var(--gold); }
+
+  .cta-band p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    font-weight: 300;
+    position: relative;
+  }
+
+  .cta-band .cta-btns {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  /* SOCIALS */
+  .socials-section {
+    padding: 5rem clamp(1.5rem, 6vw, 6rem);
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .socials-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted2);
+  }
+
+  .socials-links {
+    display: flex;
+    gap: 1.2rem;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border: 1px solid var(--border-dim);
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.25s;
+  }
+
+  .social-link:hover {
+    border-color: var(--border);
+    color: var(--gold);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border-dim);
+    padding: 2.5rem clamp(1.5rem, 6vw, 6rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  footer .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  footer .copy {
+    font-size: 0.78rem;
+    color: var(--muted2);
+    letter-spacing: 0.05em;
+  }
+
+  footer .tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--muted2);
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 3rem;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero-title { font-size: clamp(2.8rem, 14vw, 6rem); }
+    .socials-section { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* CHART LINE DECORATION */
+  .hero-chart {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 120px;
+    pointer-events: none;
+    opacity: 0.15;
+  }
+
+  /* ═══ JOURNAL STYLES ═══ */
+  #journal-overlay.open { display:flex !important; }
+  #journal-panel.open { transform:translateX(0) !important; }
+
+  .jnav-btn {
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:3px;background:none;border:none;cursor:pointer;color:#3a3a3a;
+    font-family:'Syne',sans-serif;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;
+    transition:color 0.2s;padding:0;
+  }
+  .jnav-btn.active { color:var(--gold); }
+  .jnav-fab {
+    width:48px;height:48px;border-radius:50%;
+    background:linear-gradient(135deg,var(--gold),#8a6f2e);
+    border:none;color:#000;font-size:24px;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 18px rgba(201,168,76,0.35);margin-top:-18px;flex-shrink:0;
+    transition:transform 0.15s;
+  }
+  .jnav-fab:hover { transform:scale(1.06); }
+
+  .j-screen { padding:0 0 20px; animation:jFadeUp 0.28s ease; }
+  @keyframes jFadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+
+  .j-hdr {
+    padding:52px 18px 14px;display:flex;justify-content:space-between;align-items:flex-start;
+    border-bottom:1px solid #111;margin-bottom:14px;
+  }
+  .j-logo { font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:0.18em;color:var(--gold);text-transform:uppercase; }
+  .j-sub { font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;color:#444;margin-top:2px; }
+
+  .j-card {
+    background:#141414;border:1px solid #1e1e1e;border-radius:12px;
+    padding:16px 18px;margin:0 14px 10px;
+  }
+  .j-label {
+    font-family:'Syne',sans-serif;font-size:9px;letter-spacing:0.2em;
+    text-transform:uppercase;color:#444;margin-bottom:7px;
+  }
+  .j-val { font-family:'DM Mono',monospace;font-size:24px;font-weight:700;line-height:1; }
+  .j-green { color:#00C896; }
+  .j-red { color:#FF4757; }
+  .j-gold { color:var(--gold); }
+
+  .j-save-btn {
+    flex:1;padding:14px;border-radius:10px;
+    background:linear-gradient(135deg,var(--gold),#8a6f2e);
+    border:none;color:#000;font-family:'Syne',sans-serif;
+    font-size:12px;font-weight:700;letter-spacing:0.15em;cursor:pointer;
+    text-transform:uppercase;
+  }
+  .j-del-btn {
+    padding:14px 18px;border-radius:10px;
+    background:rgba(255,71,87,0.1);border:1px solid rgba(255,71,87,0.25);
+    color:#FF4757;cursor:pointer;font-family:'Syne',sans-serif;font-size:12px;font-weight:600;
+  }
+  .j-cal-cell {
+    border-radius:7px;cursor:pointer;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;min-height:40px;padding:3px 2px;gap:2px;
+  }
+  .j-close-btn {
+    background:rgba(255,255,255,0.04);border:1px solid #222;color:#444;
+    border-radius:7px;padding:6px 12px;cursor:pointer;font-size:13px;
+    font-family:'Syne',sans-serif;
+  }
+  #journal-screens::-webkit-scrollbar { width:0; }
+  @media(max-width:500px){ #journal-panel{max-width:100%!important;} }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow-orb"></div>
+<div class="glow-orb2"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Prime Lounge</a>
+  <ul class="nav-links">
+    <li><a href="#about">O mnie</a></li>
+    <li><a href="#oferta">Oferta</a></li>
+    <li><a href="#dlaczego">Dlaczego my</a></li>
+  </ul>
+  <a href="journal.html" target="_blank" class="nav-cta" style="text-decoration:none;display:inline-flex;align-items:center;">
+    Journal →
+  </a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PRIME LOUNGE — TRADING JOURNAL OVERLAY
+═══════════════════════════════════════════════════════════ -->
+<div id="journal-overlay" onclick="handleOverlayClick(event)" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);align-items:stretch;justify-content:flex-end;">
+  <div id="journal-panel" style="width:100%;max-width:460px;height:100%;background:#0a0a0a;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.38s cubic-bezier(0.16,1,0.3,1);overflow:hidden;border-left:1px solid rgba(201,168,76,0.15);">
+
+    <!-- JOURNAL SCREEN CONTAINER -->
+    <div id="journal-screens" style="flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;"></div>
+
+    <!-- BOTTOM NAV -->
+    <div style="display:flex;height:66px;background:#0d0d0d;border-top:1px solid #1e1e1e;flex-shrink:0;align-items:center;">
+      <button class="jnav-btn" id="jnav-home" onclick="jGo('home')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="jnav-btn" id="jnav-calendar" onclick="jGo('calendar')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+        <span>Dziennik</span>
+      </button>
+      <button class="jnav-fab" onclick="jGo('add')">+</button>
+      <button class="jnav-btn" id="jnav-economic" onclick="jGo('economic')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        <span>Rynek</span>
+      </button>
+      <button class="jnav-btn" id="jnav-notes" onclick="jGo('notes')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span>Notatki</span>
+      </button>
+    </div>
+
+    <!-- TOAST -->
+    <div id="j-toast" style="position:absolute;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;border:1px solid #2a2a2a;color:#ddd;padding:10px 22px;font-size:13px;font-family:'Syne',sans-serif;letter-spacing:0.08em;opacity:0;transition:all 0.25s;pointer-events:none;white-space:nowrap;z-index:10;"></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-eyebrow">Forex · Mentoring · Prop Firms</div>
+  <p class="hero-name">Hej, tu Damian</p>
+  <h1 class="hero-title">
+    Prime<br>
+    <span class="gold">Lounge</span>
+  </h1>
+  <p class="hero-tagline">No Excuses. Just Results.</p>
+  <p class="hero-desc">
+    Buduję ludzi, którzy <strong>zarabiają na rynku</strong> — nie tylko o tym gadają.<br>
+    Zero wymówek, zero teorii bez pokrycia. Tylko <strong>konkret, mindset i wyniki</strong>.
+  </p>
+  <div class="hero-ctas">
+    <a href="#oferta" class="btn-primary">Zobacz ofertę →</a>
+    <a href="https://discord.gg/d3JuTbub7J" class="btn-secondary" target="_blank">Dołącz do Discord</a>
+  </div>
+
+  <svg class="hero-chart" viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline fill="none" stroke="#c9a84c" stroke-width="1.5"
+      points="0,100 60,90 120,85 200,88 280,70 360,75 420,55 500,60 560,40 640,45 720,25 800,30 870,18 940,22 1020,8 1100,12 1200,2"/>
+    <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
+    </linearGradient>
+    <polygon fill="url(#grad)"
+      points="0,100 60,90 120,85 200,88 280,70 360,75 420,55 500,60 560,40 640,45 720,25 800,30 870,18 940,22 1020,8 1100,12 1200,2 1200,120 0,120"/>
+  </svg>
+</section>
+
+<!-- TESTIMONIALS TICKER -->
+<div class="reviews-bar">
+  <div class="reviews-inner">
+
+    <div class="review-card">
+      <div class="review-header">
+        <span class="review-name">anton_</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+      <p class="review-text">Wykupiłem mentoring 1:1 z Damianem i zdecydowanie było warto. Pokazał mi konkretną strategię krok po kroku. W końcu rozumiem co robię na rynku, a nie tylko zgaduję wejścia. Byłem na 10tkach grupek i żadna mi tak nie pomogła jak ta.</p>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <span class="review-name">aveil_ <span class="review-badge">VIP ACCESS</span></span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+      <p class="review-text">Bardzo polecam Damiana jako mentora tradingu. Przebrnąłem przez wiele grupek zagranicznych i polskich — tutaj odnalazłem to, czego szukałem. Już na samym starcie zrobiłem największy progres i profity niż przez ostatnie parę miesięcy.</p>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <span class="review-name">Błysk <span class="review-badge">VIP ACCESS</span></span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+      <p class="review-text">Dzięki za te 4 miesiące współpracy — wiele się nauczyłem, wiele mi rozjaśniłeś i wskazałeś drogę, którą samemu byłoby mi ciężko odnaleźć. Sam długo błądziłem, a początku w tej branży są okrutne. NASTĘPNY ROK JEST NASZ 💪</p>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <span class="review-name">Teresa Medrek</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+      <p class="review-text">Pozytywnie się zaskoczyłam jeśli chodzi o sygnały — pierwszy raz mam konto na plus w grupie sygnałowej. Fajnie jest również jak sam zamykasz pozycję i tłumaczysz dlaczego. Czuć, że wiesz co robisz.</p>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <span class="review-name">luki</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+      <p class="review-text">Tutaj jest inaczej — widać, że wrzucasz sygnały i analizy z sensem i sam w nie wchodzisz, a nie sygnał na flara żeby było i w plecy. 4 dni zdałem pierwszy step, więc się cieszę. Ostatnim razem męczyłem się 2 miesiące.</p>
+    </div>
+
+    <!-- duplicate for seamless loop -->
+    <div class="review-card">
+      <div class="review-header">
+        <span class="review-name">anton_</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+      <p class="review-text">Wykupiłem mentoring 1:1 z Damianem i zdecydowanie było warto. Pokazał mi konkretną strategię krok po kroku. W końcu rozumiem co robię na rynku, a nie tylko zgaduję wejścia. Byłem na 10tkach grupek i żadna mi tak nie pomogła jak ta.</p>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <span class="review-name">aveil_ <span class="review-badge">VIP ACCESS</span></span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+      <p class="review-text">Bardzo polecam Damiana jako mentora tradingu. Przebrnąłem przez wiele grupek zagranicznych i polskich — tutaj odnalazłem to, czego szukałem. Już na samym starcie zrobiłem największy progres i profity niż przez ostatnie parę miesięcy.</p>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <span class="review-name">Błysk <span class="review-badge">VIP ACCESS</span></span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+      <p class="review-text">Dzięki za te 4 miesiące współpracy — wiele się nauczyłem, wiele mi rozjaśniłeś i wskazałeś drogę, którą samemu byłoby mi ciężko odnaleźć. Sam długo błądziłem, a początku w tej branży są okrutne. NASTĘPNY ROK JEST NASZ 💪</p>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <span class="review-name">Teresa Medrek</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+      <p class="review-text">Pozytywnie się zaskoczyłam jeśli chodzi o sygnały — pierwszy raz mam konto na plus w grupie sygnałowej. Fajnie jest również jak sam zamykasz pozycję i tłumaczysz dlaczego. Czuć, że wiesz co robisz.</p>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <span class="review-name">luki</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+      <p class="review-text">Tutaj jest inaczej — widać, że wrzucasz sygnały i analizy z sensem i sam w nie wchodzisz, a nie sygnał na flara żeby było i w plecy. 4 dni zdałem pierwszy step, więc się cieszę. Ostatnim razem męczyłem się 2 miesiące.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="about-card">
+        <div class="about-stat">
+          <span class="stat-number">4+</span>
+          <span class="stat-label">Lata aktywnego tradingu na Forex</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="about-stat">
+          <span class="stat-number">100+</span>
+          <span class="stat-label">Zadowolonych klientów</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="about-stat">
+          <span class="stat-number">ZERO</span>
+          <span class="stat-label">Ściemy — tylko realne wyniki</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-text reveal" style="transition-delay: 0.15s">
+      <div class="section-label">O mnie</div>
+      <h3>Nie sprzedaję<br>marzeń — tylko wyniki</h3>
+      <div class="divider"></div>
+      <p>
+        Jestem Damian — trader i mentor, który <strong>nie sprzedaje marzeń, tylko wyniki.</strong>
+        Nie interesuje mnie teoria ani „ładne wykresy". Interesuje mnie jedno: Twój wynik
+        i to, co realnie blokuje Twój zarobek.
+      </p>
+      <p>
+        Pracuję indywidualnie, wchodząc w Twoją psychikę i decyzje, żeby <strong>wyeliminować
+        schematy, które sabotują Twój trading.</strong> Swój edge zbudowałem na rynku Forex —
+        na realnych pieniądzach, presji i błędach, które kosztują.
+      </p>
+      <p>
+        Dziś aktywnie gram, prowadzę ludzi na live'ach i pomagam im <strong>przechodzić przez
+        prop firmy</strong> — bez ściemy, bez teorii dla laików.
+      </p>
+      <p style="border-left: 2px solid var(--gold); padding-left: 1.2rem; margin-top: 1.8rem; font-style: italic; color: rgba(240,237,230,0.5);">
+        Prime Lounge to nie jest kolejna grupa z „sygnałami". To środowisko, które albo Cię
+        rozwinie… albo pokaże, dlaczego dalej przegrywasz.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="oferta">
+  <div class="services-header reveal">
+    <div class="section-label">Oferta</div>
+    <h2 class="section-title">Wybierz<br>swój poziom</h2>
+    <p class="section-sub">Od sygnałów po zarządzanie kapitałem</p>
+  </div>
+
+  <div class="services-grid">
+
+    <a href="https://www.naffy.io/mrdamix/sygnaly-tradingowe-g7M" class="service-card reveal" target="_blank">
+      <div class="service-icon">📡</div>
+      <div class="service-badge">Popularne</div>
+      <div class="service-name">Sygnały<br>Tradingowe</div>
+      <p class="service-desc">
+        Gotowe setupy z dokładnym wejściem, wyjściem i zarządzaniem ryzykiem. Każdy sygnał jest przeze mnie weryfikowany i poprzedzony analizą. Nie dostajesz strzałek — dostajesz decyzje tradera, który sam w nie wchodzi.
+      </p>
+      <span class="service-arrow">Sprawdź →</span>
+      <span class="service-num">01</span>
+    </a>
+
+    <a href="https://www.naffy.io/mrdamix/mentoring-vip-access-sbg" class="service-card reveal" style="transition-delay:0.1s" target="_blank">
+      <div class="service-icon">🎯</div>
+      <div class="service-badge">VIP</div>
+      <div class="service-name">Mentoring<br>1:1</div>
+      <p class="service-desc">
+        Praca bezpośrednio ze mną — analizujemy Twoje transakcje, rozkładamy błędy na czynniki pierwsze i budujemy strategię skrojoną pod Ciebie. Wchodzę w Twoją psychikę i decyzje, żeby wyeliminować to, co realnie blokuje Twój wynik. Dla tych, którzy chcą przejść przez prop firmę lub wreszcie zacząć zarabiać konsekwentnie.
+      </p>
+      <span class="service-arrow">Sprawdź →</span>
+      <span class="service-num">02</span>
+    </a>
+
+    <a href="https://www.naffy.io/mrdamix/account-management" class="service-card reveal" style="transition-delay:0.2s" target="_blank">
+      <div class="service-icon">💎</div>
+      <div class="service-badge">Premium</div>
+      <div class="service-name">Account<br>Management</div>
+      <p class="service-desc">
+        Powierzasz kapitał — ja nim zarządzam. Pełna transparentność wyników, odpowiedzialne zarządzanie ryzykiem i regularne raporty. Idealne rozwiązanie jeśli chcesz uczestniczyć w rynku Forex bez konieczności spędzania godzin przed wykresem.
+      </p>
+      <span class="service-arrow">Sprawdź →</span>
+      <span class="service-num">03</span>
+    </a>
+
+    <a href="https://www.naffy.io/mrdamix/snajper-bot-skrypt-by-primelounge" class="service-card reveal" style="transition-delay:0.3s" target="_blank">
+      <div class="service-icon">🤖</div>
+      <div class="service-badge">Tech</div>
+      <div class="service-name">SnajperBot<br>Skrypt</div>
+      <p class="service-desc">
+        Autorski skrypt tradingowy stworzony na bazie mojej własnej strategii. Eliminuje emocje z procesu decyzyjnego i egzekwuje setupy z precyzją, której człowiek nie jest w stanie utrzymać. Narzędzie dla tych, którzy chcą skalować wyniki bez spędzania czasu przed ekranem.
+      </p>
+      <span class="service-arrow">Sprawdź →</span>
+      <span class="service-num">04</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="dlaczego">
+  <div style="max-width:1200px; margin: 0 auto">
+    <div class="reveal" style="margin-bottom:4rem">
+      <div class="section-label">Dlaczego Prime Lounge</div>
+      <h2 class="section-title">Zero wymówek.<br>Czyste wyniki.</h2>
+      <p class="section-sub">To nie jest kolejny kurs o tradingu</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-item reveal">
+        <div class="why-num">01 —</div>
+        <div class="why-title">Realny edge</div>
+        <p class="why-text">To, co dostajesz, było najpierw przetestowane na własnym rachunku — z realnym kapitałem i pełną odpowiedzialnością za wynik. Każdy setup, każda decyzja i każde narzędzie przeszły przez rynek zanim trafiły do Ciebie. Nie uczysz się od kogoś, kto czyta o tradingu. Uczysz się od kogoś, kto nim żyje.</p>
+      </div>
+      <div class="why-item reveal" style="transition-delay:0.1s">
+        <div class="why-num">02 —</div>
+        <div class="why-title">Konkretna wiedza</div>
+        <p class="why-text">Bez lania wody, bez ogólników. Konkretne narzędzia, setupy i mindset na każdy rynek.</p>
+      </div>
+      <div class="why-item reveal" style="transition-delay:0.2s">
+        <div class="why-num">03 —</div>
+        <div class="why-title">Aktywna społeczność</div>
+        <p class="why-text">Otaczasz się ludźmi, którzy grają na tym samym poziomie co Ty — i wyżej.</p>
+      </div>
+      <div class="why-item reveal" style="transition-delay:0.3s">
+        <div class="why-num">04 —</div>
+        <div class="why-title">Pełna transparentność</div>
+        <p class="why-text">Pokazuję zarówno zyski, jak i straty — bo na błędach uczy się najszybciej. Każda transakcja jest omówiona, każda decyzja uzasadniona. Bez retuszu, bez selekcji wyników pod publikę.</p>
+      </div>
+      <div class="why-item reveal" style="transition-delay:0.4s">
+        <div class="why-num">05 —</div>
+        <div class="why-title">Mindset zwycięzcy</div>
+        <p class="why-text">Technika otwiera drzwi — ale to głowa decyduje, czy przez nie wejdziesz. Większość traderów przegrywa nie dlatego, że nie zna setupów. Przegrywa, bo w kluczowym momencie działa strach, chciwość lub ego. Pracujemy nad tym, co naprawdę sabotuje Twój wynik — impulsywnymi decyzjami, revenge tradingiem, wyłączaniem SL i przesuwaniem TP. Budujesz nie tylko strategię, ale odporność psychiczną, która pozwala egzekwować ją konsekwentnie — niezależnie od tego, co robi rynek.</p>
+      </div>
+      <div class="why-item reveal" style="transition-delay:0.5s">
+        <div class="why-num">06 —</div>
+        <div class="why-title">Stały rozwój</div>
+        <p class="why-text">Rynek nie stoi w miejscu — i my też nie. Stale aktualizujemy podejście, narzędzia i strategie, żeby Twoja przewaga nad rynkiem była realna, nie iluzoryczna.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <h2 class="reveal">Wchodzisz albo <span>zostajesz</span><br>tam gdzie jesteś.</h2>
+  <p class="reveal">Jeśli dalej szukasz wymówek — to nie jest miejsce dla Ciebie.</p>
+  <div class="cta-btns reveal">
+    <a href="https://www.naffy.io/mrdamix/konsultacja-wstepna-ENI" class="btn-primary" target="_blank">Umów się na rozmowę →</a>
+    <a href="https://discord.gg/d3JuTbub7J" class="btn-secondary" target="_blank">Discord Community</a>
+  </div>
+</div>
+
+<!-- SOCIALS -->
+<div style="max-width:1200px; margin: 0 auto">
+  <div class="socials-section">
+    <span class="socials-label">Znajdź mnie tutaj</span>
+    <div class="socials-links">
+      <a href="https://www.instagram.com/damix.trades/" class="social-link" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Instagram
+      </a>
+      <a href="https://discord.gg/d3JuTbub7J" class="social-link" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Discord
+      </a>
+      <a href="https://www.naffy.io/mrdamix/konsultacja-wstepna-ENI" class="social-link" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        Konsultacja
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Prime Lounge</div>
+  <div class="tagline">No Excuses. Just Results.</div>
+  <div class="copy">© 2025 Prime Lounge · Damian</div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  PRIME LOUNGE — TRADING JOURNAL
+// ═══════════════════════════════════════════════════════
+
+const J = {
+  screen: 'home',
+  trades: {},
+  notes: [],
+  calMonth: new Date(),
+  form: { date: '', pnl: '', isProfit: true, note: '' },
+  events: [],
+  evLoading: false,
+  evLoaded: false,
+  newNote: '',
+
+  today() { return new Date().toISOString().split('T')[0]; },
+
+  fmtPnL(v) {
+    if (v == null) return '—';
+    const a = Math.abs(v).toFixed(2);
+    return v >= 0 ? '+' + a + '$' : '-' + a + '$';
+  },
+  fmtShort(v) {
+    if (v == null) return '';
+    const a = Math.abs(v);
+    const s = a >= 1000 ? (a/1000).toFixed(1)+'k' : Math.round(a)+'';
+    return (v >= 0 ? '+' : '-') + s;
+  },
+
+  load() {
+    try { const r = localStorage.getItem('pl_trades'); if (r) this.trades = JSON.parse(r); } catch {}
+    try { const r = localStorage.getItem('pl_notes'); if (r) this.notes = JSON.parse(r); } catch {}
+  },
+  saveTrades() { try { localStorage.setItem('pl_trades', JSON.stringify(this.trades)); } catch {} },
+  saveNotes()  { try { localStorage.setItem('pl_notes',  JSON.stringify(this.notes));  } catch {} },
+
+  toast(msg) {
+    const t = document.getElementById('j-toast');
+    t.textContent = msg; t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)';
+    setTimeout(() => { t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(20px)'; }, 2000);
+  },
+
+  // ── Stats ──────────────────────────────────────────
+  allEntries() { return Object.entries(this.trades); },
+  allTotal()   { return this.allEntries().reduce((s,[,v])=>s+v.pnl,0); },
+  allWins()    { return this.allEntries().filter(([,v])=>v.pnl>0).length; },
+  allWinRate() { const a=this.allEntries().length; return a?Math.round((this.allWins()/a)*100):0; },
+
+  monthKey(d) { return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); },
+  monthEntries() { const k=this.monthKey(this.calMonth); return Object.entries(this.trades).filter(([x])=>x.startsWith(k)); },
+  monthTotal()   { return this.monthEntries().reduce((s,[,v])=>s+v.pnl,0); },
+  mWins()   { return this.monthEntries().filter(([,v])=>v.pnl>0).length; },
+  mLosses() { return this.monthEntries().filter(([,v])=>v.pnl<0).length; },
+  mWinRate(){ const e=this.monthEntries().length; return e?Math.round((this.mWins()/e)*100):0; },
+
+  streak() {
+    let s=0;
+    for (let i=0;i<30;i++){
+      const d=new Date(); d.setDate(d.getDate()-i);
+      const k=d.toISOString().split('T')[0];
+      if (!this.trades[k]||this.trades[k].pnl<0) break; s++;
+    }
+    return s;
+  },
+
+  // ── Navigation ──────────────────────────────────────
+  go(screen) {
+    this.screen = screen;
+    document.querySelectorAll('.jnav-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.getElementById('jnav-' + screen);
+    if (btn) btn.classList.add('active');
+    if (screen === 'economic' && !this.evLoaded) this.fetchEvents();
+    this.render();
+  },
+
+  // ── Render ──────────────────────────────────────────
+  render() {
+    const el = document.getElementById('journal-screens');
+    const screens = { home: ()=>this.renderHome(), calendar: ()=>this.renderCalendar(), add: ()=>this.renderAdd(), economic: ()=>this.renderEconomic(), notes: ()=>this.renderNotes() };
+    el.innerHTML = (screens[this.screen] || screens.home)();
+    el.scrollTop = 0;
+  },
+
+  // ── HOME ────────────────────────────────────────────
+  renderHome() {
+    const td = this.trades[this.today()];
+    const allTotal = this.allTotal(), allWR = this.allWinRate(), streak = this.streak();
+    const allCount = this.allEntries().length, allW = this.allWins();
+    const last7 = Array.from({length:7},(_,i)=>{
+      const d=new Date(); d.setDate(d.getDate()-6+i);
+      const k=d.toISOString().split('T')[0];
+      const lbl=d.toLocaleDateString('pl-PL',{weekday:'short'}).slice(0,2).toUpperCase();
+      return { k, lbl, t: this.trades[k] };
+    });
+
+    const todayCard = td ? `
+      <div style="margin-top:4px;">
+        <div class="j-val ${td.pnl>=0?'j-green':'j-red'}">${this.fmtPnL(td.pnl)}</div>
+        ${td.note?`<div style="font-size:12px;color:#555;margin-top:8px;border-top:1px solid #1e1e1e;padding-top:8px;line-height:1.6;">${td.note}</div>`:''}
+        <button onclick="J.openEdit('${this.today()}')" style="margin-top:10px;font-size:11px;color:#444;background:none;border:none;cursor:pointer;font-family:'Syne',sans-serif;letter-spacing:0.1em;padding:0;">EDYTUJ →</button>
+      </div>` : `
+      <div style="display:flex;align-items:center;gap:14px;margin-top:6px;">
+        <div class="j-val" style="color:#222;">— $</div>
+        <button onclick="J.go('add')" style="font-size:11px;color:var(--gold);background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:7px;padding:6px 14px;cursor:pointer;font-family:'Syne',sans-serif;letter-spacing:0.1em;">+ DODAJ WPIS</button>
+      </div>`;
+
+    const last7html = last7.map(({k,lbl,t})=>`
+      <div onclick="J.openEdit('${k}')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;">
+        <div style="font-size:9px;color:#2a2a2a;letter-spacing:0.05em;">${lbl}</div>
+        <div style="width:100%;aspect-ratio:1;border-radius:7px;background:${t?(t.pnl>=0?'rgba(0,200,150,0.12)':'rgba(255,71,87,0.12)'):'#1a1a1a'};border:1px solid ${k===this.today()?'var(--gold)':t?(t.pnl>=0?'rgba(0,200,150,0.3)':'rgba(255,71,87,0.3)'):'#222'};display:flex;align-items:center;justify-content:center;min-height:32px;">
+          ${t?`<div style="width:7px;height:7px;border-radius:50%;background:${t.pnl>=0?'#00C896':'#FF4757'};"></div>`:''}
+        </div>
+        ${t?`<div style="font-size:8px;color:${t.pnl>=0?'#00C896':'#FF4757'};font-family:'DM Mono',monospace;">${this.fmtShort(t.pnl)}</div>`:'<div style="height:14px;"></div>'}
+      </div>`).join('');
+
+    return `<div class="j-screen">
+      <div class="j-hdr">
+        <div><div class="j-logo">PRIME LOUNGE</div><div class="j-sub">Trading Journal</div></div>
+        <div style="text-align:right;padding-top:4px;">
+          <button class="j-close-btn" onclick="closeJournal()">✕ Zamknij</button>
+          <div style="font-size:10px;color:#2a2a2a;margin-top:6px;">${new Date().toLocaleDateString('pl-PL',{day:'numeric',month:'short',year:'numeric'})}</div>
+        </div>
+      </div>
+
+      <div class="j-card" style="background:#161616;border-color:${td?(td.pnl>=0?'rgba(0,200,150,0.2)':'rgba(255,71,87,0.2)'):'#1e1e1e'};">
+        <div class="j-label">Dzisiaj</div>
+        ${todayCard}
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:0 14px 10px;">
+        <div class="j-card" style="margin:0;padding:13px;text-align:center;">
+          <div class="j-label" style="font-size:8px;">Łącznie</div>
+          <div style="font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:${allTotal>=0?'#00C896':'#FF4757'};">${this.fmtPnL(allTotal)}</div>
+        </div>
+        <div class="j-card" style="margin:0;padding:13px;text-align:center;">
+          <div class="j-label" style="font-size:8px;">Win Rate</div>
+          <div style="font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:var(--gold);">${allWR}%</div>
+        </div>
+        <div class="j-card" style="margin:0;padding:13px;text-align:center;">
+          <div class="j-label" style="font-size:8px;">Seria</div>
+          <div style="font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:${streak>2?'#00C896':'#f0ede6'};">${streak}d</div>
+        </div>
+      </div>
+
+      <div class="j-card">
+        <div class="j-label" style="margin-bottom:12px;">Ostatnie 7 dni</div>
+        <div style="display:flex;gap:5px;">${last7html}</div>
+      </div>
+
+      ${allCount===0?`<div style="text-align:center;padding:24px;color:#222;font-size:13px;font-family:'Cormorant Garamond',serif;font-style:italic;">Dodaj pierwszy wpis tradingowy →</div>`:`
+      <div style="text-align:center;padding:10px 14px 0;font-family:'Syne',sans-serif;font-size:9px;color:#222;letter-spacing:0.15em;">
+        ${allCount} WPISÓW · ${allW} ZYSKI · ${allCount-allW} STRATY
+      </div>`}
+    </div>`;
+  },
+
+  // ── CALENDAR ────────────────────────────────────────
+  renderCalendar() {
+    const year=this.calMonth.getFullYear(), month=this.calMonth.getMonth();
+    const firstDay=(new Date(year,month,1).getDay()+6)%7;
+    const days=new Date(year,month+1,0).getDate();
+    const cells=[...Array(firstDay).fill(null),...Array.from({length:days},(_,i)=>i+1)];
+    while(cells.length%7!==0) cells.push(null);
+
+    const mT=this.monthTotal(), mWR=this.mWinRate(), mW=this.mWins(), mL=this.mLosses();
+    const monthName=this.calMonth.toLocaleDateString('pl-PL',{month:'long',year:'numeric'});
+
+    const calCells = cells.map((day,i)=>{
+      if(!day) return `<div></div>`;
+      const dk=year+'-'+String(month+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+      const t=this.trades[dk];
+      const isToday=dk===this.today();
+      const bg=t?(t.pnl>=0?'rgba(0,200,150,0.12)':'rgba(255,71,87,0.12)'):'#1a1a1a';
+      const border=isToday?'var(--gold)':t?(t.pnl>=0?'rgba(0,200,150,0.3)':'rgba(255,71,87,0.3)'):'#222';
+      const dayColor=isToday?'var(--gold)':t?(t.pnl>=0?'#00C896':'#FF4757'):'#3a3a3a';
+      return `<div class="j-cal-cell" onclick="J.openEdit('${dk}')"
+        style="background:${bg};border:1px solid ${border};">
+        <div style="font-size:11px;color:${dayColor};font-weight:${isToday?'700':'400'};font-family:'Syne',sans-serif;">${day}</div>
+        ${t?`<div style="font-size:7px;color:${t.pnl>=0?'#00C896':'#FF4757'};font-family:'DM Mono',monospace;line-height:1;">${this.fmtShort(t.pnl)}</div>`:''}
+      </div>`;
+    }).join('');
+
+    return `<div class="j-screen">
+      <div class="j-hdr">
+        <div><div class="j-logo">DZIENNIK</div><div class="j-sub">${monthName}</div></div>
+        <div style="display:flex;gap:6px;padding-top:4px;">
+          <button class="j-close-btn" onclick="J.prevMonth()">‹</button>
+          <button class="j-close-btn" onclick="J.nextMonth()">›</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:0 14px 10px;">
+        <div class="j-card" style="margin:0;padding:12px;text-align:center;">
+          <div class="j-label" style="font-size:8px;">Miesiąc</div>
+          <div style="font-family:'DM Mono',monospace;font-size:15px;font-weight:700;color:${mT>=0?'#00C896':'#FF4757'};">${this.fmtPnL(mT)}</div>
+        </div>
+        <div class="j-card" style="margin:0;padding:12px;text-align:center;">
+          <div class="j-label" style="font-size:8px;">Zysk/Strata</div>
+          <div style="font-size:15px;font-weight:700;"><span style="color:#00C896;">${mW}</span><span style="color:#2a2a2a;">/</span><span style="color:#FF4757;">${mL}</span></div>
+        </div>
+        <div class="j-card" style="margin:0;padding:12px;text-align:center;">
+          <div class="j-label" style="font-size:8px;">Win Rate</div>
+          <div style="font-family:'DM Mono',monospace;font-size:15px;font-weight:700;color:var(--gold);">${mWR}%</div>
+        </div>
+      </div>
+
+      <div class="j-card" style="padding:14px 11px;">
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:8px;">
+          ${['Pn','Wt','Śr','Cz','Pt','Sb','Nd'].map(d=>`<div style="text-align:center;font-size:9px;color:#2a2a2a;padding-bottom:6px;font-family:'Syne',sans-serif;letter-spacing:0.05em;">${d}</div>`).join('')}
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;">${calCells}</div>
+      </div>
+
+      <div style="display:flex;gap:14px;padding:6px 18px;">
+        ${[['rgba(0,200,150,0.12)','rgba(0,200,150,0.3)','Zysk'],['rgba(255,71,87,0.12)','rgba(255,71,87,0.3)','Strata'],['transparent','var(--gold)','Dziś']].map(([bg,b,l])=>`
+        <div style="display:flex;align-items:center;gap:5px;">
+          <div style="width:10px;height:10px;border-radius:3px;background:${bg};border:1px solid ${b};"></div>
+          <span style="font-size:10px;color:#333;font-family:'Syne',sans-serif;">${l}</span>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  },
+
+  prevMonth() { this.calMonth = new Date(this.calMonth.getFullYear(), this.calMonth.getMonth()-1, 1); this.render(); },
+  nextMonth() { this.calMonth = new Date(this.calMonth.getFullYear(), this.calMonth.getMonth()+1, 1); this.render(); },
+
+  openEdit(date) {
+    const t = this.trades[date];
+    this.form = { date, pnl: t?String(Math.abs(t.pnl)):'', isProfit: t?t.pnl>=0:true, note: t?.note||'' };
+    this.go('add');
+  },
+
+  // ── ADD ENTRY ──────────────────────────────────────
+  renderAdd() {
+    const existing = this.trades[this.form.date];
+    let dateLabel = '';
+    try { dateLabel = new Date(this.form.date+'T12:00:00').toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'}); } catch { dateLabel = this.form.date; }
+
+    return `<div class="j-screen">
+      <div class="j-hdr">
+        <div>
+          <div class="j-logo">${existing?'EDYTUJ WPIS':'NOWY WPIS'}</div>
+          <div class="j-sub">${dateLabel}</div>
+        </div>
+        <button class="j-close-btn" onclick="J.go('${existing?'calendar':'home'}')" style="margin-top:4px;">✕</button>
+      </div>
+
+      <div class="j-card">
+        <div class="j-label">Data</div>
+        <input type="date" id="j-date" value="${this.form.date}"
+          style="background:none;border:none;color:#888;font-size:15px;font-family:'DM Mono',monospace;outline:none;width:100%;">
+      </div>
+
+      <div class="j-card">
+        <div class="j-label">Wynik sesji</div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <button id="j-profit-btn" onclick="J.setProfit(true)"
+            style="flex:1;padding:10px;border-radius:8px;cursor:pointer;font-family:'Syne',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:${this.form.isProfit?'rgba(0,200,150,0.12)':'transparent'};border:1px solid ${this.form.isProfit?'rgba(0,200,150,0.4)':'#222'};color:${this.form.isProfit?'#00C896':'#444'};">
+            ZYSK ↑
+          </button>
+          <button id="j-loss-btn" onclick="J.setProfit(false)"
+            style="flex:1;padding:10px;border-radius:8px;cursor:pointer;font-family:'Syne',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:${!this.form.isProfit?'rgba(255,71,87,0.12)':'transparent'};border:1px solid ${!this.form.isProfit?'rgba(255,71,87,0.4)':'#222'};color:${!this.form.isProfit?'#FF4757':'#444'};">
+            STRATA ↓
+          </button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="color:${this.form.isProfit?'#00C896':'#FF4757'};font-size:22px;font-weight:700;font-family:'DM Mono',monospace;">${this.form.isProfit?'+':'−'}</span>
+          <input type="number" id="j-pnl" min="0" step="0.01" placeholder="0.00" value="${this.form.pnl}"
+            style="flex:1;background:none;border:none;border-bottom:1px solid ${this.form.isProfit?'rgba(0,200,150,0.2)':'rgba(255,71,87,0.2)'};color:${this.form.isProfit?'#00C896':'#FF4757'};font-size:28px;font-family:'DM Mono',monospace;outline:none;padding:4px 0;width:100%;">
+          <span style="color:#2a2a2a;font-size:18px;font-family:'DM Mono',monospace;">$</span>
+        </div>
+      </div>
+
+      <div class="j-card">
+        <div class="j-label">Notatka do sesji</div>
+        <textarea id="j-note" rows="4" placeholder="Setup, wejście, wyjście, emocje, wnioski..."
+          style="width:100%;background:none;border:none;color:#888;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;resize:none;margin-top:8px;line-height:1.65;">${this.form.note}</textarea>
+      </div>
+
+      <div style="display:flex;gap:10px;padding:0 14px;">
+        <button class="j-save-btn" onclick="J.submitTrade()">ZAPISZ WPIS</button>
+        ${existing?`<button class="j-del-btn" onclick="J.deleteTrade('${this.form.date}')">Usuń</button>`:''}
+      </div>
+    </div>`;
+  },
+
+  setProfit(val) { this.form.isProfit = val; this.syncForm(); this.render(); },
+  syncForm() {
+    const d=document.getElementById('j-date'), p=document.getElementById('j-pnl'), n=document.getElementById('j-note');
+    if(d) this.form.date=d.value;
+    if(p) this.form.pnl=p.value;
+    if(n) this.form.note=n.value;
+  },
+
+  submitTrade() {
+    this.syncForm();
+    const val = parseFloat(this.form.pnl);
+    if (!this.form.pnl || isNaN(val) || val <= 0) { this.toast('Wprowadź poprawną kwotę'); return; }
+    const pnl = val * (this.form.isProfit ? 1 : -1);
+    this.trades[this.form.date] = { pnl, note: this.form.note };
+    this.saveTrades();
+    this.toast(pnl >= 0 ? '✓ Zysk zapisany!' : '✓ Strata zapisana!');
+    this.form = { date: this.today(), pnl: '', isProfit: true, note: '' };
+    this.go('home');
+  },
+
+  deleteTrade(date) {
+    delete this.trades[date];
+    this.saveTrades();
+    this.toast('Wpis usunięty');
+    this.go('calendar');
+  },
+
+  // ── ECONOMIC CALENDAR ──────────────────────────────
+  renderEconomic() {
+    const impactColor = { high:'#FF4757', medium:'var(--gold)', low:'#333' };
+    const impactLabel = { high:'WYSOKI', medium:'ŚREDNI', low:'NISKI' };
+    const flags = { USD:'🇺🇸', EUR:'🇪🇺', GBP:'🇬🇧', JPY:'🇯🇵', CAD:'🇨🇦', AUD:'🇦🇺', CHF:'🇨🇭', NZD:'🇳🇿' };
+    const dateLabel = new Date().toLocaleDateString('pl-PL',{day:'numeric',month:'long'});
+
+    let body = '';
+    if (this.evLoading) {
+      body = `<div style="text-align:center;padding:60px 20px;">
+        <div style="width:30px;height:30px;border:2px solid rgba(201,168,76,0.2);border-top:2px solid var(--gold);border-radius:50%;margin:0 auto 16px;animation:spin 0.8s linear infinite;"></div>
+        <div style="color:var(--gold);font-family:'Syne',sans-serif;font-size:11px;letter-spacing:0.2em;">POBIERANIE DANYCH...</div>
+      </div>
+      <style>@keyframes spin{to{transform:rotate(360deg)}}</style>`;
+    } else if (!this.evLoaded) {
+      body = `<div style="text-align:center;padding:50px 20px;">
+        <button onclick="J.fetchEvents()" style="padding:12px 24px;border-radius:9px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);color:var(--gold);cursor:pointer;font-family:'Syne',sans-serif;font-size:11px;letter-spacing:0.15em;">ZAŁADUJ DANE</button>
+      </div>`;
+    } else if (!this.events.length) {
+      body = `<div style="text-align:center;padding:50px;color:#222;font-size:13px;">Brak danych — spróbuj odświeżyć</div>`;
+    } else {
+      body = this.events.map(ev=>`
+        <div style="background:#141414;border:1px solid #1e1e1e;border-left:2px solid ${impactColor[ev.impact]||'#333'};border-radius:10px;padding:13px 15px;margin:0 14px 8px;display:flex;gap:11px;">
+          <div style="min-width:40px;">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:#444;">${ev.time}</div>
+            <div style="font-size:14px;margin-top:4px;">${flags[ev.currency]||'🌐'}</div>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
+              <span style="font-size:9px;font-weight:700;font-family:'Syne',sans-serif;color:${impactColor[ev.impact]||'#444'};background:${impactColor[ev.impact]||'#444'}18;padding:2px 7px;border-radius:4px;letter-spacing:0.1em;">${ev.currency}</span>
+              <span style="font-size:8px;color:${impactColor[ev.impact]||'#444'};font-family:'Syne',sans-serif;letter-spacing:0.1em;">${impactLabel[ev.impact]||''}</span>
+            </div>
+            <div style="font-size:12px;font-weight:500;color:#ccc;margin-bottom:5px;line-height:1.4;">${ev.event}</div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              ${ev.forecast?`<div style="font-size:10px;"><span style="color:#2a2a2a;">Prognoza: </span><span style="color:#888;font-family:'DM Mono',monospace;">${ev.forecast}</span></div>`:''}
+              ${ev.previous?`<div style="font-size:10px;"><span style="color:#2a2a2a;">Poprzedni: </span><span style="color:#555;font-family:'DM Mono',monospace;">${ev.previous}</span></div>`:''}
+            </div>
+          </div>
+        </div>`).join('') + `<div style="text-align:center;padding:16px;font-size:9px;color:#1f1f1f;font-family:'Syne',sans-serif;letter-spacing:0.15em;">DANE GENEROWANE PRZEZ AI · ${new Date().toLocaleDateString('pl-PL')}</div>`;
+    }
+
+    return `<div class="j-screen">
+      <div class="j-hdr">
+        <div><div class="j-logo">KALENDARZ</div><div class="j-sub">Ekonomiczny — ${dateLabel}</div></div>
+        <button class="j-close-btn" onclick="J.refreshEvents()" style="margin-top:4px;">↻ Odśwież</button>
+      </div>
+      ${body}
+    </div>`;
+  },
+
+  refreshEvents() { this.evLoaded=false; this.events=[]; this.render(); setTimeout(()=>this.fetchEvents(),50); },
+
+  async fetchEvents() {
+    if (this.evLoading || this.evLoaded) return;
+    this.evLoading = true; this.render();
+    try {
+      const dateStr = new Date().toLocaleDateString('pl-PL',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+      const res = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          model:'claude-sonnet-4-20250514',
+          max_tokens:1200,
+          system:`You are an economic calendar data provider. Return ONLY a valid JSON array, no markdown, no backticks, no explanation. Each object: {"time":"HH:MM","currency":"USD","event":"name","impact":"high|medium|low","forecast":"value or empty string","previous":"value or empty string"}. Generate 10-12 realistic economic events for ${dateStr}. Include USD, EUR, GBP, JPY events. Times in CET. Vary impact levels. Use real recurring events like CPI, PMI, NFP, interest rate decisions, trade balance, unemployment claims, etc.`,
+          messages:[{role:'user',content:'economic calendar today JSON array'}]
+        })
+      });
+      const data = await res.json();
+      const txt = data.content?.[0]?.text||'[]';
+      this.events = JSON.parse(txt.replace(/```json|```/g,'').trim());
+      this.evLoaded = true;
+    } catch { this.events=[]; this.evLoaded=true; }
+    this.evLoading = false; this.render();
+  },
+
+  // ── NOTES ──────────────────────────────────────────
+  renderNotes() {
+    const notesList = this.notes.map(n=>`
+      <div style="background:#141414;border:1px solid #1e1e1e;border-radius:10px;padding:14px 16px;margin:0 14px 8px;position:relative;padding-right:36px;">
+        <div style="font-size:9px;color:#2a2a2a;font-family:'DM Mono',monospace;margin-bottom:8px;letter-spacing:0.1em;">${new Date(n.date).toLocaleDateString('pl-PL',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+        <div style="font-size:13px;color:#bbb;line-height:1.65;white-space:pre-wrap;">${n.text.replace(/</g,'&lt;')}</div>
+        <button onclick="J.deleteNote(${n.id})" style="position:absolute;top:10px;right:12px;background:none;border:none;color:#2a2a2a;cursor:pointer;font-size:18px;padding:2px;line-height:1;">×</button>
+      </div>`).join('');
+
+    return `<div class="j-screen">
+      <div class="j-hdr">
+        <div><div class="j-logo">NOTATKI</div><div class="j-sub">${this.notes.length} zapisanych</div></div>
+      </div>
+
+      <div class="j-card">
+        <div class="j-label">Nowa notatka</div>
+        <textarea id="j-new-note" rows="3" placeholder="Strategie, obserwacje, zasady tradingowe, przemyślenia..."
+          style="width:100%;background:none;border:none;color:#888;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;resize:none;margin-top:8px;line-height:1.65;">${this.newNote}</textarea>
+        <button onclick="J.addNote()" class="j-save-btn" style="margin-top:12px;flex:unset;display:inline-block;padding:9px 20px;">ZAPISZ</button>
+      </div>
+
+      ${this.notes.length===0?`<div style="text-align:center;padding:30px;color:#1f1f1f;font-family:'Cormorant Garamond',serif;font-style:italic;">Brak notatek — dodaj pierwszą powyżej</div>`:''}
+      ${notesList}
+    </div>`;
+  },
+
+  addNote() {
+    const ta = document.getElementById('j-new-note');
+    const text = (ta ? ta.value : this.newNote).trim();
+    if (!text) return;
+    this.notes = [{ id: Date.now(), text, date: new Date().toISOString() }, ...this.notes];
+    this.saveNotes(); this.newNote = ''; this.toast('✓ Notatka zapisana'); this.render();
+  },
+  deleteNote(id) {
+    this.notes = this.notes.filter(n => n.id !== id);
+    this.saveNotes(); this.toast('Notatka usunięta'); this.render();
+  }
+};
+
+// ── Global helpers ──────────────────────────────────
+function jGo(s) {
+  if (s === 'add') { J.form = { date: J.today(), pnl: '', isProfit: true, note: '' }; }
+  J.go(s);
+}
+
+function openJournal() {
+  J.load();
+  J.form.date = J.today();
+  const ov = document.getElementById('journal-overlay');
+  const pn = document.getElementById('journal-panel');
+  ov.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => { pn.classList.add('open'); });
+  J.go('home');
+}
+
+function closeJournal() {
+  const ov = document.getElementById('journal-overlay');
+  const pn = document.getElementById('journal-panel');
+  pn.classList.remove('open');
+  setTimeout(() => { ov.classList.remove('open'); document.body.style.overflow = ''; }, 380);
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('journal-overlay')) closeJournal();
+}
+
+// ── Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(r => io.observe(r));
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
